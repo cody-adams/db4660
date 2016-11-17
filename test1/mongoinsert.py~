@@ -1,0 +1,6 @@
+from pymongo import MongoClient
+client = MongoClient()
+db = client['db4660']
+cursor = db.students.find()
+for document in cursor:
+    print(document)
