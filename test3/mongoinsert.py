@@ -32,7 +32,7 @@ d={
 }
 #Students
 students_insert = datetime.now()
-for _ in range(100):
+for _ in range(1000):
     before = datetime.now()
     fname=d['fname'][random.randint(0,len(d['fname'])-1)]
     lname=d['lname'][random.randint(0,len(d['lname'])-1)]
@@ -49,10 +49,10 @@ for _ in range(100):
         students_insert = after - before
     else:
         students_insert += after - before
-print "Average for insert 100 students one by one is {}".format(students_insert/100)
+print "Average for insert 1000 students one by one is {}".format(students_insert/1000)
 #Faculty
 faculty_insert = datetime.now()
-for _ in range(10):
+for _ in range(100):
     before = datetime.now()
     fname=d['fname'][random.randint(0,len(d['fname'])-1)]
     lname=d['lname'][random.randint(0,len(d['lname'])-1)]
@@ -67,7 +67,7 @@ for _ in range(10):
         faculty_insert = after - before
     else:
         faculty_insert += after - before 
-print "Average for insert 10 faculty one by one is {}".format(faculty_insert/10)
+print "Average for insert 10 faculty one by one is {}".format(faculty_insert/100)
 deps=[
     'Math',
     'English',
@@ -79,10 +79,10 @@ deps=[
     'Psychics',
     'These are not departments',]
 departments_insert = datetime.now()
-for _ in range(5):
+for _ in range(50):
     before = datetime.now()
     dep_results = db.departments.insert_one({
-        'dname':"{}".format(deps[_]),
+        'dname':"{}".format(deps[random.randint(0,8)]),
         'did': _
         })
     after = datetime.now()
@@ -90,7 +90,7 @@ for _ in range(5):
         departments_insert = after - before
     else:
         departments_insert += after - before    
-print "Average for inserting 5 departments one by one is {}".format(departments_insert/5)
+print "Average for inserting 50 departments one by one is {}".format(departments_insert/50)
 #Insert courses
 clas=[
     'CPSC4660',
@@ -101,7 +101,7 @@ clas=[
     'MATH2000',
     'JPN1500',]
 classes_insert = datetime.now()
-for _ in range(20):
+for _ in range(200):
     before = datetime.now()
     cla_results = db.classes.insert_one({
         'cname':"{}".format(clas[random.randint(0,len(clas)-1)]),
@@ -113,7 +113,7 @@ for _ in range(20):
         classes_insert = after - before
     else:
         classes_insert += after - before
-print "Average for inserting 20 classes one by one is {}".format(classes_insert/20)
+print "Average for inserting 200 classes one by one is {}".format(classes_insert/200)
 import pymongo
 cid = db.classes.find().sort([('cid', pymongo.DESCENDING)])[1]
 courses = cid['cid']

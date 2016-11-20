@@ -26,8 +26,14 @@ tables['classes'] =( "CREATE TABLE `classes` ("
 ") ENGINE=InnoDB")
 tables['depts'] =( "CREATE TABLE `depts` ("
 "`dname` varchar(25) NOT NULL,"
-"PRIMARY KEY (`dname`)"
+"`did` int(11) NOT NULL AUTO_INCREMENT,"
+"PRIMARY KEY (`did`)"
 ") ENGINE=InnoDB")
+tables['takes'] =( "CREATE TABLE `takes` ("
+                   "`cno` int(11) NOT NULL,"
+                   "`sid` int(11) NOT NULL,"
+                   "PRIMARY KEY (cno,sid)"
+                   ") ENGINE-InnoDB")
 cursor = cnx.cursor()
 DB_NAME='db4660'
 def create_database(cursor):
@@ -59,54 +65,5 @@ for name, ddl in tables.iteritems():
             print(err.msg)
     else:
         print("OK")
-#Create random names
-d={
-'fname':[
-    'Cody',
-    'ThuyVi',
-    'Shawn',
-    'Wyatt',
-    'Jamie',
-    'Geoff',
-    'John',
-    'Travis',
-    'Laura',
-    'Liam',
-    'Sam',],
-'lname':[
-    'Adams',
-    'Nguyen',
-    'Higa',
-    'Trombley',
-    'Blue',
-    'Chappell',
-    'Oliver',
-    'Willingham',
-    'Bailey',
-    'OBrien',
-    'Reigel',],
-}
-import pickle
-f=open('names','w')
-pickle.dump(d,f)
-f.close()
-
-
-# read the dict back in from the file
-f1=open('names','r')
-sd=pickle.load(f1)
-f1.close()
-
-import random
-for _ in range(100):
-    first_part=sd['fname'][random.randint(0,len(sd['fname'])-1)]
-    second_part=sd['lname'][random.randint(0,len(sd['lname'])-1)]
-    print('{} {}'.format(first_part, second_part))
-    cursor.execute("INSERT INTO students (fname,lname,age,addr) VALUES('{}','{}',{},'yes')".format(first_part, second_part,random.randint(0,99)))
-cursor.execute("SELECT * FROM students")
-cursor.execute("DELETE * FROM students")
-
-
-
 cursor.close()
 cnx.close()
