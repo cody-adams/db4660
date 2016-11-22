@@ -150,10 +150,13 @@ for _ in range(100):
     else:
         join_insert += after - before
 print "Selecting values out of Takes with sids matching from students, 100 times averages: {}".format(join_insert/100)
-cursor.close()
-cursor = cnx.cursor()
+before = datetime.now()
+cursor.execute("DELETE FROM students WHERE sid = 99")
+after = datetime.now()
+print "Deleting a record from table students takes: {} ".format(after - before)
+begin = datetime.now()
 cursor.execute("DROP TABLES students")
-cursor.close()
+after = datetime.now()
 cursor = cnx.cursor()
 cursor.execute("DROP TABLES classes")
 cursor.close()

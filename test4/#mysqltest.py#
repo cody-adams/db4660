@@ -112,7 +112,7 @@ for _ in range(200):
     else:
         classes_insert += after - before
 print "Selecting Classes 200 times averages to be: {}".format(classes_insert/200)
-for _ in range(300):
+qfor _ in range(300):
     before = datetime.now()
     cursor.execute("SELECT * FROM classes")
     after = datetime.now()

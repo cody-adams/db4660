@@ -341,16 +341,21 @@ print "Getting teaches 300 times, averages to be {}".format(get_teaches_avg)
 #print cid['cid']
 students_takes_avg = datetime.now()
 times = 0
+begin = datetime.now()
 stu_res = db.students.find()
 for document in stu_res:
-    before = datetime.now()
     takes_res = db.takes.find({"sid":document['sid']})
+after = datetime.now()
+print "The average time for joining students with takes {} times is {}".format(100,after - begin)
+delete_avg = datetime.now()
+for _ in range(100):
+    before = datetime.now()
+    db.students.remove({"sid": _})
     after = datetime.now()
-    if(times == 0):
-        students_takes_avg = after - before
+    if(_==0):
+        delete_avg = after - before
     else:
-        students_takes_avg += after - before
-    times += 1
-print "The average time for joining students with takes {} times is {}".format(times,students_takes_avg/times)
-    
+        delete_avg = after - before
+
+print "The average time it took to delete a record from student 100 times is {}".format(delete_avg)
     
