@@ -1,9 +1,8 @@
-from __future__ import print_function
 import mysql.connector
 from mysql.connector import errorcode
 from datetime import datetime
 cnx = mysql.connector.connect(user='root', password='hello', database='db4660', host='127.0.0.1')
-cursor = cnx.cursor()
+cursor = cnx.cursor(buffered=True)
 sd={
 'fname':[
     'Cody',
@@ -68,7 +67,7 @@ deps=[
     'These are not departments',]
 for _ in range(100):
     before = datetime.now()
-    cursor.execute("INSERT INTO depts (dname) VALUES('{}')".format(deps[random.randint(0,len(deps))]))
+    cursor.execute("INSERT INTO depts (dname) VALUES('{}')".format(deps[random.randint(0,len(deps)-1)]))
     after = datetime.now()
     if (_==0):
         depts_insert = after - before
@@ -84,19 +83,17 @@ clas=[
     'MATH2000',
     'JPN1500',]
 
-for _ in range(400):
+for _ in range(40):
     before = datetime.now()
-    cursor.execute("INSERT INTO classes (cname,cno) VALUES('{}',{})".format(clas[random.randint(0,len(clas))]))
+    cursor.execute("INSERT INTO classes (cname,cno) VALUES('{}',{})".format(clas[random.randint(0,len(clas)-1)],_))
     after = datetime.now()
     if (_==0):
         classes_insert = after - before
     else:
         classes_insert += after - before
 print "Average time to insert a record into classes 400 times is: {}".format(classes_insert/400)
-cursor.execute("SELECT sid FROM students")
-tmpcursor = cnx.cursor()
-for (sid_value) in cursor:
-    tmpcursor.execute("INSERT INTO takes (cno,sid) VALUES({},{})".format(random.randint(0,19),sid_value))
+for _ in range(200):
+    cursor.execute("INSERT INTO takes (cno,sid) VALUES({},{})".format(random.randint(0,39),_))
 for _ in range(100):
     before = datetime.now()
     cursor.execute("SELECT * FROM classes")
@@ -127,7 +124,7 @@ print "Selecting Classes 300 times averages to be: {}".format(classes_insert/300
         
 for _ in range(100):
     before = datetime.now()
-    cursor.execute("SELECT * FROM takes WHERE sid in (SELECT sid FROM students))")
+    cursor.execute("SELECT * FROM takes WHERE sid in (SELECT sid FROM students)")
     after = datetime.now()
     if (_==0):
         join_insert = after - before
@@ -135,11 +132,10 @@ for _ in range(100):
         join_insert += after - before
 print "Selecting values out of Takes with sids matching from students, 100 times averages: {}".format(join_insert/100)
 
-cursor.execute("DELETE * FROM students")
-cursor.execute("DELETE * FROM classes")
-cursor.execute("DELETE * FROM departments")
-cursor.execute("DELETE * FROM takes")
-cursor.execute("DELETE * FROM faculty")
+cursor.execute("DROP TABLES students")
+cursor.execute("DROP TABLES classes")
+cursor.execute("DROP TABLES depts")
+cursor.execute("DROP TABLES takes")
+cursor.execute("DROP TABLES faculty")
 cursor.close()
-tmpcursor.close()
 cnx.close()
