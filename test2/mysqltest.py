@@ -132,6 +132,35 @@ for _ in range(100):
         join_insert += after - before
 print "Selecting values out of Takes with sids matching from students, 100 times averages: {}".format(join_insert/100)
 
+large_join = datetime.now()
+for _ in range(100):
+    before = datetime.now()
+    cursor.execute("SELECT * FROM students INNER JOIN takes ON students.sid=takes.sid INNER JOIN classes ON classes.cno=takes.cno")
+    after = datetime.now()
+    for document in cursor:
+        n = 1
+    if (_==0):
+        large_join = after - before
+    else:
+        large_join += after - before
+print "Joining 3 tables 100 times on average takes {}".format(large_join/100)
+
+largest_join = datetime.now()
+for _ in range(100):
+    before = datetime.now()
+    cursor.execute("SELECT * FROM students INNER JOIN takes ON students.sid=takes.sid INNER JOIN classes ON classes.cno=takes.cno INNER JOIN teaches ON classes.cno=teaches.cno INNER JOIN faculty ON teaches.fid=faculty.fid")
+    after = datetime.now()
+    for document in cursor:
+        n = 1
+    if (_==0):
+        largest_join = after - before
+    else:
+        largest_join += after - before
+print "Joining 5 tables 100 times on average takes {}".format(largest_join/100)
+before = datetime.now()
+cursor.execute("DELETE FROM students WHERE sid = 99")
+after = datetime.now()
+print "Deleting a record from table students takes: {} ".format(after - before)
 cursor.execute("DROP TABLES students")
 cursor.execute("DROP TABLES classes")
 cursor.execute("DROP TABLES depts")

@@ -346,7 +346,29 @@ stu_res = db.students.find()
 for document in stu_res:
     takes_res = db.takes.find({"sid":document['sid']})
 after = datetime.now()
-print "The average time for joining students with takes {} times is {}".format(100,after - begin)
+print "The time for joining students with takes is {}".format(after - begin)
+#Used to grab 
+#client2 = MongoClient()
+#db2 = client.db4660
+begin = datetime.now()
+stu2_res = db.students.find()
+mval = 0
+for document in stu2_res:
+    if mval==0:
+        takes2_res = db.takes.find({"sid":document['sid']})
+        val = 1
+    else:
+        takes2_res += db.takes.find({"sid":document['sid']})
+mval = 0
+for document in takes2_res:
+    if mval==0:
+        classes2_res = db.takes.find({"cid":document['cid']})
+        val = 1
+    else:
+        classes2_res += db.takes.find({"cid":document['cid']})
+after = datetime.now()
+print "The average time for joining students with takes with classes is {}".format(after - begin)
+
 delete_avg = datetime.now()
 for _ in range(100):
     before = datetime.now()

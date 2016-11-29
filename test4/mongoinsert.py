@@ -341,16 +341,28 @@ print "Getting teaches 300 times, averages to be {}".format(get_teaches_avg)
 #print cid['cid']
 students_takes_avg = datetime.now()
 times = 0
+begin = datetime.now()
 stu_res = db.students.find()
 for document in stu_res:
-    before = datetime.now()
     takes_res = db.takes.find({"sid":document['sid']})
-    after = datetime.now()
-    if(times == 0):
-        students_takes_avg = after - before
+after = datetime.now()
+print "The time for joining students with takes is {}".format(after - begin)    
+begin = datetime.now()
+stu2_res = db.students.find()
+mval = 0
+for document in stu2_res:
+    if mval==0:
+        takes2_res = db.takes.find({"sid":document['sid']})
+        val = 1
     else:
-        students_takes_avg += after - before
-    times += 1
-print "The average time for joining students with takes {} times is {}".format(times,students_takes_avg/times)
-    
+        takes2_res += db.takes.find({"sid":document['sid']})
+mval = 0
+for document in takes2_res:
+    if mval==0:
+        classes2_res = db.takes.find({"cid":document['cid']})
+        val = 1
+    else:
+        classes2_res += db.takes.find({"cid":document['cid']})
+after = datetime.now()
+print "The average time for joining students with takes with classes is {}".format(after - begin)
     
